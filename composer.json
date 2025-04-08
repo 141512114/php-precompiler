@@ -1,0 +1,20 @@
+{
+  "name": "nolanbjarneschiemann/php-precompiler",
+  "version": "0.0.1",
+  "description": "A php precompiler",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "nolanbjarneschiemann",
+      "email": "nolan.bjarne@icloud.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "General\\": "classes/"
+    }
+  }
+}
