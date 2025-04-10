@@ -10,8 +10,6 @@
       "email": "nolan.bjarne@icloud.com"
     }
   ],
-  "require": {
-  },
   "autoload": {
     "psr-4": {
       "General\\": "classes/"

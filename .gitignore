@@ -78,3 +78,6 @@ fabric.properties
 
 # Composer
 vendor/*
+
+# NPM
+src/node_modules/*

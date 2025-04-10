@@ -27,6 +27,9 @@
             <excludedPath path=".gitignore" />
             <excludedPath path="LICENSE" />
             <excludedPath path="README.md" />
+            <excludedPath path="src/node_modules" />
+            <excludedPath path="src/package-lock.json" />
+            <excludedPath path="src/package.json" />
           </excludedPaths>
         </serverdata>
       </paths>
