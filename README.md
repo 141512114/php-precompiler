@@ -18,3 +18,6 @@ A concise list of things planned for this project and how it might be used.
   somewhere near the top of your project and it automatically does its job with no further configuration (**!!! highly unlikely !!!**).
 
 This project will essentially be a more primitive form of caching (I believe), so it will be inferior to its "competitors".
+
+### Version 2
+Could be a more robust software programmed in C/C++ and feature some advancements over the PHP version.
