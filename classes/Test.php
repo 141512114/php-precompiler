@@ -12,7 +12,7 @@ class Test
         return ob_get_clean();
     }
 
-    public function getCurrentFile()
+    public function getCurrentFile(): array|string
     {
         return pathinfo($_SERVER['PHP_SELF'], PATHINFO_BASENAME);
     }

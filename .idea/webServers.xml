@@ -6,7 +6,7 @@
         <fileTransfer mountedRoot="/Applications/XAMPP/xamppfiles/htdocs" accessType="MOUNT" port="0" />
       </webServer>
       <webServer id="e3bcb7f6-588d-4cc8-91fa-4a5627a7bb9d" name="localhost (Windows)" url="http://localhost">
-        <fileTransfer mountedRoot="C:\xampp\htdocs\phpprecompiler" accessType="MOUNT" port="0" />
+        <fileTransfer mountedRoot="/C:\xampp\htdocs\phpprecompiler" accessType="MOUNT" port="0" />
       </webServer>
     </option>
   </component>
