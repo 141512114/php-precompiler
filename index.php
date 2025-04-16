@@ -30,7 +30,7 @@ $currentFile = $test->getCurrentFile();
         </div>
 
         <div class="col-12 bg-black text-light p-3">
-            <h2 class="fw-semibold text-danger">Output of current file:</h2>
+            <h2 class="fw-semibold text-danger">Output of the current file:</h2>
             <p class="m-0">
                 <?php
 
