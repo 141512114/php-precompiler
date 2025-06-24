@@ -21,7 +21,7 @@ $currentFile = $_FILEANALYZER->getCurrentFile();
     <div class="row vstack row-gap-3 py-5">
         <div class="col-12">
             <h2>Call to function render() inside the Test class:</h2>
-            <?= $test->render(); // How does isolation work in PHP? Which generally defined variables/constants/... can I access inside a class?                 ?>
+            <?= $test->render(); // How does isolation work in PHP? Which generally defined variables/constants/... can I access inside a class?                  ?>
         </div>
 
         <div class="col-12 bg-info p-3">
@@ -57,6 +57,7 @@ $currentFile = $_FILEANALYZER->getCurrentFile();
             <div class="mb-3">
                 <?php
 
+                // @TODO: This might be too complex, it could be worth looking into the PHP base function `get_included_files()` to get all included files (might even be faster)
                 $includes = $_FILEANALYZER->findIncludes( $currentFile );
 
                 ?>

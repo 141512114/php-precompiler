@@ -24,7 +24,9 @@ class FileAnalyzer
     public function findIncludes( string $file ): array
     {
         $includes     = [];
+        // @TODO: Instead of looking for includes in the current file, it might be more efficient to use `get_included_files()` to get all included files
         $fileContents = file_get_contents( $file );
+        // @TODO: Then it is possible to combine the files with the current file and remove their implementations from the code (anywhere), so that the current file only contains the includes and no other code
 
         if ( $fileContents === FALSE ) {
             return $includes; // Return empty array if file cannot be read
