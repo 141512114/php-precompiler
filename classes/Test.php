@@ -11,9 +11,4 @@ class Test
         include __DIR__ . '/../views/testView.php';
         return ob_get_clean();
     }
-
-    public function getCurrentFile(): array|string
-    {
-        return pathinfo($_SERVER['PHP_SELF'], PATHINFO_BASENAME);
-    }
 }
