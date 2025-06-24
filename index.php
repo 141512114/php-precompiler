@@ -14,7 +14,7 @@ $currentFile = $test->getCurrentFile();
 <html lang="en">
 <head>
     <title>PHP Precompiler/Caching</title>
-    <link rel="stylesheet" href="assets/stylesheets/style.min.css">
+    <link rel="stylesheet" href="src/assets/stylesheets/style.min.css">
 </head>
 <body>
 <section class="container-xxl">
