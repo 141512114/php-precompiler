@@ -65,6 +65,9 @@ $currentFile = $_FILEANALYZER->getCurrentFile();
                 <ul class="list-group">
                     <?php
 
+                    // Get all included files (yes, there is a function for this)
+                    print_r( get_included_files() );
+
                     if ( !empty( $includes ) ) {
                         foreach ( $includes as $include ) {
                             echo '<li class="list-group-item">' . htmlspecialchars( $include ) . '</li>';
@@ -84,6 +87,7 @@ $currentFile = $_FILEANALYZER->getCurrentFile();
                     foreach ( $includes as $include ):
                         echo '<pre class="bg-dark-subtle text-dark m-0 p-3">';
 
+                        // @FIXME: eval() should not be used!!
                         $include = eval( 'return ' . $include . ';' ); // Evaluate the include path to get the actual file path (UNSAFE)
 
                         if ( !empty( $include ) && is_file( $include ) ) {
