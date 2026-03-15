@@ -33,8 +33,15 @@ class FileAnalyzer
         }
 
         // Use regex to find all include/require statements
-        // @TODO: Consider using a more robust parser for complex cases => this regex is basic and may not cover all edge cases.
-        preg_match_all('/\b(?<!\$)(?:include|require)(_once)?\s*\(?\s*(.+?)\s*\)?\s*;/', $fileContents, $matches);
+        // Improved regex: matches include/require (optionally _once), optional parentheses, and captures only quoted string literals (single or double quotes).
+        // - Avoids matching variable-based includes (e.g., $var) by using a negative lookbehind for '$'
+        // - Case-insensitive to allow `Include`/`REQUIRE` variants
+        // Group 1 will contain the quote character, group 2 the file path without surrounding quotes.
+        preg_match_all('/\b(?<!\$)(?:include|require)(?:_once)?\s*(?:\(\s*)?([\'\"])(.*?)\1\s*\)?\s*;/i', $fileContents, $matches);
+
+        if ( empty($matches) || !isset($matches[2]) ) {
+            return $includes;
+        }
 
         foreach ( $matches[2] as $include ) {
             $trimmedInclude = trim($include);
