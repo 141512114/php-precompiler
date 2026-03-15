@@ -5,16 +5,6 @@ namespace General;
 class FileAnalyzer
 {
     /**
-     * Retrieves the name of the currently executing PHP file.
-     *
-     * @return array|string The basename of the current file as a string, or an array if additional path info is requested.
-     */
-    public function getCurrentFile(): array|string
-    {
-        return pathinfo($_SERVER['PHP_SELF'], PATHINFO_BASENAME);
-    }
-
-    /**
      * Finds all include/require statements in a given PHP file.
      *
      * @param string $file The path to the PHP file to analyze.

@@ -11,10 +11,10 @@ class FileHandler
      *
      * @return string|false The contents of the file or false on failure.
      */
-    public function getFileContents( string $filePath ): string|false
+    public function getFileContents(string $filePath): string|false
     {
-        if ( is_file( $filePath ) ) {
-            return file_get_contents( $filePath );
+        if ( is_file($filePath) ) {
+            return file_get_contents($filePath);
         }
         return FALSE;
     }
@@ -26,8 +26,8 @@ class FileHandler
      *
      * @return string Sanitized contents.
      */
-    public function sanitizeContents( string $contents ): string
+    public function sanitizeContents(string $contents): string
     {
-        return nl2br( htmlspecialchars( $contents ) );
+        return nl2br(htmlspecialchars($contents));
     }
 }
