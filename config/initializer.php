@@ -1,5 +1,6 @@
 <?php
 
+use General\Cache\FileCache;
 use General\File\FileRepository;
 
 // Fehlerprotokollierung aktivieren
@@ -8,6 +9,9 @@ ini_set( 'error_log', '/logs/php_error.log' );
 error_reporting( E_ALL );
 
 ob_start();
+
+// Cache initialisieren (z.B. 24 Stunden Gültigkeit)
+$_CACHE = new FileCache( './cache', 86400 );
 
 $_CONTAINER = require_once( __DIR__ . '/container.php' );
 

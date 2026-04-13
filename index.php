@@ -113,7 +113,36 @@ $currentPath = $currentFile->getPath();
                         <small class="bg-white text-muted px-2">(<?= $currentPath; ?>)</small>
                     </div>
                     <div class="code-container bg-light p-3 rounded" style="max-height: 500px; overflow: auto;">
-                        <?= highlight_string( $currentFile->writeIncludesIntoFile(), true ); ?>
+                        <?php
+
+                        // Prüfen, ob bereits ein Cache existiert
+                        if ( $_CACHE->has( $currentPath ) ) {
+
+                            // Gecachten Inhalt laden
+                            $content = $_CACHE->get( $currentPath );
+                            echo 'Aus Cache geladen!';
+
+                        } else {
+
+                            // Inhalt neu generieren
+                            $content = $currentFile->writeIncludesIntoFile();
+
+                            if ( $content !== FALSE ) {
+
+                                // Im Cache speichern
+                                $_CACHE->set( $currentPath, $content );
+                                echo 'Neu generiert und gecacht!';
+
+                            }
+                        }
+
+                        // Inhalt verwenden
+                        if ( $content !== FALSE ) {
+                            /* eval('?>' . $content); */
+                            echo highlight_string( $content, TRUE );
+                        }
+
+                        ?>
                     </div>
                 </div>
             </div>
