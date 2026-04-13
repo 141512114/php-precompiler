@@ -11,4 +11,5 @@ ob_start();
 
 $_CONTAINER = require_once( __DIR__ . '/container.php' );
 
+/** @var FileRepository $_FILEREPOSITORY */
 $_FILEREPOSITORY = $_CONTAINER->get( FileRepository::class );

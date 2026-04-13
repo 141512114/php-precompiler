@@ -99,7 +99,7 @@ class FileAnalyzer
 
             if ( $includeContent === FALSE ) continue;
 
-            // PHP-Tags aus dem einzufügenden Inhalt entfernen
+            // Bereite den Inhalt für den Merge vor
             $includeContent = $this->sanitizer->prepareForMerge( $includeContent );
 
             // Ersetze das Include-Statement mit dem Dateiinhalt
@@ -113,6 +113,6 @@ class FileAnalyzer
         }
 
         // Abschließend: Mehrfache Leerzeilen im gesamten Dokument reduzieren
-        return preg_replace( '/\n{3,}/', "\n\n", $fileContents );
+        return $this->sanitizer->reduceBlankLines( $fileContents );
     }
 }
