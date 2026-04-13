@@ -81,5 +81,3 @@ vendor/*
 
 # NPM
 src/node_modules/*
-src/assets/*
-!src/assets/**/.gitkeep
