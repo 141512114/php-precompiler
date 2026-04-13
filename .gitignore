@@ -81,3 +81,4 @@ vendor/*
 
 # NPM
 src/node_modules/*
+src/assets/stylesheets/css/*
