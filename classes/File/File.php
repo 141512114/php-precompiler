@@ -8,16 +8,19 @@ class File
 {
     private FileHandler  $handler;
     private FileAnalyzer $analyzer;
+    private FileSanitizer $sanitizer;
 
     private string $path;
 
     public function __construct(
         FileHandler  $handler,
         FileAnalyzer $analyzer,
+        FileSanitizer $sanitizer,
         string       $path
     ) {
         $this->handler  = $handler;
         $this->analyzer = $analyzer;
+        $this->sanitizer = $sanitizer;
 
         $this->setPath( $path );
     }
@@ -25,7 +28,7 @@ class File
     public function getContent(): false|string
     {
         $content = $this->fileHandler()->getFileContents( $this->getPath() );
-        return $this->fileHandler()->sanitizeContents( $content );
+        return $this->fileSanitizer()->sanitizeContents( $content );
     }
 
     /**
@@ -64,6 +67,11 @@ class File
     private function fileAnalyzer(): FileAnalyzer
     {
         return $this->analyzer;
+    }
+
+    private function fileSanitizer(): FileSanitizer
+    {
+        return $this->sanitizer;
     }
 
     public function getPath(): string

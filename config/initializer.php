@@ -1,8 +1,5 @@
 <?php
 
-use General\AppRepository;
-use General\File\FileAnalyzer;
-use General\File\FileHandler;
 use General\File\FileRepository;
 
 // Fehlerprotokollierung aktivieren
@@ -12,9 +9,6 @@ error_reporting( E_ALL );
 
 ob_start();
 
-$_FILEHANDLER  = new FileHandler();
-$_FILEANALYZER = new FileAnalyzer( $_FILEHANDLER );
+$_CONTAINER = require_once( __DIR__ . '/container.php' );
 
-$_APPREPOSITORY = new AppRepository( $_FILEANALYZER, $_FILEHANDLER );
-
-$_FILEREPOSITORY = new FileRepository( $_FILEHANDLER, $_FILEANALYZER );
+$_FILEREPOSITORY = $_CONTAINER->get( FileRepository::class );

@@ -9,11 +9,19 @@ class FileRepository
 {
     private FileHandler  $handler;
     private FileAnalyzer $analyzer;
+    private FileSanitizer $sanitizer;
+    private FileFactory  $factory;
 
-    public function __construct( FileHandler $handler, FileAnalyzer $analyzer )
-    {
+    public function __construct(
+        FileHandler  $handler,
+        FileAnalyzer $analyzer,
+        FileSanitizer $sanitizer,
+        FileFactory  $factory
+    ) {
         $this->handler  = $handler;
         $this->analyzer = $analyzer;
+        $this->sanitizer = $sanitizer;
+        $this->factory  = $factory;
     }
 
     /**
@@ -26,7 +34,7 @@ class FileRepository
         $filesFound = get_included_files();
 
         $returnFiles = [];
-        foreach ( $filesFound as $filePath ) $returnFiles[] = $this->createFile( $filePath );
+        foreach ( $filesFound as $filePath ) $returnFiles[] = $this->factory->createFile( $filePath );
 
         return $returnFiles;
     }
@@ -46,7 +54,7 @@ class FileRepository
             throw new RuntimeException( "File not found: $filePath" );
         }
 
-        return $this->createFile( $absolutePath );
+        return $this->factory->createFile( $absolutePath );
     }
 
     /**
@@ -66,7 +74,7 @@ class FileRepository
             throw new RuntimeException( "Included file not found: {$include->getPath()}" );
         }
 
-        return $this->createFile( $resolvedPath );
+        return $this->factory->createFile( $resolvedPath );
     }
 
     /**
@@ -107,21 +115,5 @@ class FileRepository
     public function getCurrentFile(): File
     {
         return $this->getFileByPath( $_SERVER[ 'SCRIPT_FILENAME' ] );
-    }
-
-    /**
-     * Creates a new File instance.
-     *
-     * @param string $path Absolute path to the file.
-     *
-     * @return File
-     */
-    private function createFile( string $path ): File
-    {
-        return new File(
-            $this->handler,
-            $this->analyzer,
-            $path
-        );
     }
 }

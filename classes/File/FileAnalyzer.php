@@ -9,11 +9,13 @@ use General\File\Include\FileInclude;
  */
 class FileAnalyzer
 {
-    private FileHandler $handler;
+    private FileHandler   $handler;
+    private FileSanitizer $sanitizer;
 
-    public function __construct( FileHandler $handler )
+    public function __construct( FileHandler $handler, FileSanitizer $sanitizer )
     {
-        $this->handler = $handler;
+        $this->handler   = $handler;
+        $this->sanitizer = $sanitizer;
     }
 
     /**
@@ -98,7 +100,7 @@ class FileAnalyzer
             if ( $includeContent === FALSE ) continue;
 
             // PHP-Tags aus dem einzufügenden Inhalt entfernen
-            $includeContent = $this->handler->stripPhpTags( $includeContent );
+            $includeContent = $this->sanitizer->prepareForMerge( $includeContent );
 
             // Ersetze das Include-Statement mit dem Dateiinhalt
             $fileContents = substr_replace(
