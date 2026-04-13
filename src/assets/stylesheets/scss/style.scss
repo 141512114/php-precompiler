@@ -1,1 +1,19 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap";
+
+/*
+
+General
+
+ */
+
+.code-container {
+  max-height: 500px;
+  overflow: auto;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.code-container code {
+  white-space: pre;
+}

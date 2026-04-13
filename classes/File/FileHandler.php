@@ -5,6 +5,9 @@ namespace General\File;
 use General\File\Include\FileInclude;
 use RuntimeException;
 
+/**
+ * Handles file operations, including resolving paths, reading files, and sanitizing content.
+ */
 class FileHandler
 {
     /**
@@ -113,5 +116,26 @@ class FileHandler
     public function sanitizeContents( string $contents ): string
     {
         return nl2br( htmlspecialchars( $contents ) );
+    }
+
+    /**
+     * Strips opening and closing PHP tags from content.
+     *
+     * @param string $content The content to strip PHP tags from.
+     *
+     * @return string The content with PHP tags stripped.
+     */
+    public function stripPhpTags( string $content ): string
+    {
+        // Entferne öffnende PHP-Tags (<?php, <?=, <?)
+        $content = preg_replace( '/^<\?(?:php)?\s*/i', '', $content );
+
+        // Entferne schließende PHP-Tags am Ende
+        $content = preg_replace( '/\s*\?>\s*$/', '', $content );
+
+        // Entferne führende/trailing Leerzeilen
+        $content = trim( $content );
+        // Reduziere mehrfache Leerzeilen auf maximal eine
+        return preg_replace( '/\n{3,}/', "\n\n", $content );
     }
 }

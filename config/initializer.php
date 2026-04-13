@@ -13,7 +13,7 @@ error_reporting( E_ALL );
 ob_start();
 
 $_FILEHANDLER  = new FileHandler();
-$_FILEANALYZER = new FileAnalyzer();
+$_FILEANALYZER = new FileAnalyzer( $_FILEHANDLER );
 
 $_APPREPOSITORY = new AppRepository( $_FILEANALYZER, $_FILEHANDLER );
 

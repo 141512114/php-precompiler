@@ -39,72 +39,83 @@ $currentPath = $currentFile->getPath();
         </div>
 
         <div class="col-12 bg-black text-light p-3">
-            <div class="mb-3">
+            <div>
                 <div class="mb-3">
                     <h2 class="fw-semibold text-danger">Output of the current file:</h2>
                     <small class="bg-white text-muted px-2">(<?= $currentPath; ?>)</small>
                 </div>
-                <?php
-
-                if ( !empty( $currentFile ) ) {
-
-                    $content = $currentFile->getContent();
-
-                    if ( !empty( $content ) ) {
-                        ?>
-                        <div id="accordionCurrentFileContent" class="accordion">
-                            <div class="accordion-item">
-                                <h4 id="headingCurrentFile" class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-currentFile" aria-expanded="true" aria-controls="collapse-currentFile">
-                                        Currently viewed file content
-                                    </button>
-                                </h4>
-                                <div id="collapse-currentFile" class="accordion-collapse collapse" aria-labelledby="headingCurrentFile" data-bs-parent="#accordionCurrentFileContent">
-                                    <div class="accordion-body"><?= $content; ?></div>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-
-                    } else {
-
-                        echo '<p class="m-0">File has no content.</p>';
-
-                    }
-                }
-
-                ?>
-            </div>
-            <div>
                 <div class="mb-3">
-                    <h2 class="fw-semibold text-danger">Includes found in file:</h2>
-                    <small class="bg-white text-muted px-2">(<?= $currentPath; ?>)</small>
-                </div>
-                <?php
+                    <?php
 
-                $currentIncludedFiles = $_FILEREPOSITORY->getFilesFromIncludes( $currentFile );
+                    if ( !empty( $currentFile ) ) {
 
-                if ( !empty( $currentIncludedFiles ) ): ?>
-                    <div id="accordionIncludesCurrent" class="accordion">
-                        <?php foreach ( $currentIncludedFiles as $index => $include ): ?>
-                            <div class="accordion-item">
-                                <h4 id="heading<?= $index; ?>" class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-current<?= $index; ?>" aria-expanded="true" aria-controls="collapse-current<?= $index; ?>">
-                                        <?= $include->getPath(); ?>
-                                    </button>
-                                </h4>
-                                <div id="collapse-current<?= $index; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index; ?>" data-bs-parent="#accordionIncludesCurrent">
-                                    <div class="accordion-body"><?= $include->getContent(); ?></div>
+                        $content = $currentFile->getContent();
+
+                        if ( !empty( $content ) ) {
+                            ?>
+                            <div id="accordionCurrentFileContent" class="accordion">
+                                <div class="accordion-item">
+                                    <h4 id="headingCurrentFile" class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-currentFile" aria-expanded="true" aria-controls="collapse-currentFile">
+                                            Currently viewed file content
+                                        </button>
+                                    </h4>
+                                    <div id="collapse-currentFile" class="accordion-collapse collapse" aria-labelledby="headingCurrentFile" data-bs-parent="#accordionCurrentFileContent">
+                                        <div class="accordion-body"><?= $content; ?></div>
+                                    </div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                            <?php
+
+                        } else {
+
+                            echo '<p class="m-0">File has no content.</p>';
+
+                        }
+                    }
+
+                    ?>
+                </div>
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <h3 class="fw-semibold text-warning">Includes found in file:</h3>
+                        <small class="bg-white text-muted px-2">(<?= $currentPath; ?>)</small>
                     </div>
-                <?php else:
+                    <?php
 
-                    echo '<p>No includes found.</p>';
+                    $currentIncludedFiles = $_FILEREPOSITORY->getFilesFromIncludes( $currentFile );
 
-                endif;
-                ?>
+                    if ( !empty( $currentIncludedFiles ) ): ?>
+                        <div id="accordionIncludesCurrent" class="accordion">
+                            <?php foreach ( $currentIncludedFiles as $index => $include ): ?>
+                                <div class="accordion-item">
+                                    <h4 id="heading<?= $index; ?>" class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-current<?= $index; ?>" aria-expanded="true" aria-controls="collapse-current<?= $index; ?>">
+                                            <?= $include->getPath(); ?>
+                                        </button>
+                                    </h4>
+                                    <div id="collapse-current<?= $index; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index; ?>" data-bs-parent="#accordionIncludesCurrent">
+                                        <div class="accordion-body"><?= $include->getContent(); ?></div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else:
+
+                        echo '<p>No includes found.</p>';
+
+                    endif;
+                    ?>
+                </div>
+                <div>
+                    <div class="mb-3">
+                        <h3 class="fw-semibold text-warning">Combine includes with parent file:</h3>
+                        <small class="bg-white text-muted px-2">(<?= $currentPath; ?>)</small>
+                    </div>
+                    <div class="code-container bg-light p-3 rounded" style="max-height: 500px; overflow: auto;">
+                        <?= highlight_string( $currentFile->writeIncludesIntoFile(), true ); ?>
+                    </div>
+                </div>
             </div>
         </div>
 

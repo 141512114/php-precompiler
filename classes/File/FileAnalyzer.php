@@ -4,8 +4,18 @@ namespace General\File;
 
 use General\File\Include\FileInclude;
 
+/**
+ * Analyzes PHP files for include/require statements and replaces them with their content.
+ */
 class FileAnalyzer
 {
+    private FileHandler $handler;
+
+    public function __construct( FileHandler $handler )
+    {
+        $this->handler = $handler;
+    }
+
     /**
      * Finds all include/require statements in a given PHP file with their positions.
      *
@@ -34,7 +44,7 @@ class FileAnalyzer
             $startPos    = intval( $match[ 0 ][ 1 ] );
             $type        = strtolower( $match[ 1 ][ 0 ] );                       // include, require, include_once, require_once
             $dirConstant = !empty( $match[ 2 ][ 0 ] ) ? $match[ 2 ][ 0 ] : NULL; // __DIR__, __FILE__, etc.
-            $path = isset( $match[ 4 ][ 0 ] ) ? trim( $match[ 4 ][ 0 ] ) : '';
+            $path        = isset( $match[ 4 ][ 0 ] ) ? trim( $match[ 4 ][ 0 ] ) : '';
 
             if ( empty( $path ) ) continue;
 
@@ -58,26 +68,28 @@ class FileAnalyzer
     /**
      * Replaces include/require statements with the content of the included files.
      *
-     * @param string      $file     The path to the PHP file to process.
+     * @param File        $file     The File object representing the PHP file to process.
      * @param string|null $basePath Optional base path for resolving relative includes.
      *
      * @return string|false The modified file content, or false on failure.
      */
-    public function replaceIncludesWithContent( string $file, ?string $basePath = NULL ): string|false
+    public function replaceIncludesWithContent( File $file, ?string $basePath = NULL ): string|false
     {
-        $fileContents = file_get_contents( $file );
+        $path = $file->getPath();
+
+        $fileContents = file_get_contents( $path );
 
         if ( $fileContents === FALSE ) return FALSE;
 
-        $basePath = $basePath ?? dirname( $file );
-        $includes = $this->findIncludes( $file );
+        $basePath = $basePath ?? dirname( $path );
+        $includes = $this->findIncludes( $path );
 
         // Von hinten nach vorne ersetzen, um Positionsverschiebungen zu vermeiden
         $includes = array_reverse( $includes );
 
         foreach ( $includes as $include ) {
 
-            $includePath = $this->resolveIncludePath( $include[ 'path' ], $basePath );
+            $includePath = $this->handler->resolveIncludePath( $include, $basePath );
 
             if ( $includePath === NULL || !is_readable( $includePath ) ) continue;
 
@@ -86,55 +98,19 @@ class FileAnalyzer
             if ( $includeContent === FALSE ) continue;
 
             // PHP-Tags aus dem einzufügenden Inhalt entfernen
-            $includeContent = $this->stripPhpTags( $includeContent );
+            $includeContent = $this->handler->stripPhpTags( $includeContent );
 
             // Ersetze das Include-Statement mit dem Dateiinhalt
             $fileContents = substr_replace(
                 $fileContents,
                 $includeContent,
-                $include[ 'startPos' ],
-                $include[ 'endPos' ] - $include[ 'startPos' ]
+                $include->getStart(),
+                $include->getEnd() - $include->getStart()
             );
 
         }
 
-        return $fileContents;
-    }
-
-    /**
-     * Resolves a relative include path to an absolute path.
-     *
-     * @param string $includePath The relative path to resolve.
-     * @param string $basePath    The base path to resolve relative paths against.
-     *
-     * @return string|null The absolute path if found, NULL otherwise.
-     */
-    private function resolveIncludePath( string $includePath, string $basePath ): ?string
-    {
-        // Wenn der Pfad bereits absolut ist
-        if ( str_starts_with( $includePath, '/' ) || preg_match( '/^[A-Z]:/i', $includePath ) ) {
-            return is_file( $includePath ) ? $includePath : NULL;
-        }
-
-        // Relativen Pfad auflösen
-        $resolvedPath = realpath( $basePath . DIRECTORY_SEPARATOR . $includePath );
-
-        return ( $resolvedPath !== FALSE && is_file( $resolvedPath ) ) ? $resolvedPath : NULL;
-    }
-
-    /**
-     * Strips opening and closing PHP tags from content.
-     *
-     * @param string $content The content to strip PHP tags from.
-     *
-     * @return string The content with PHP tags stripped.
-     */
-    private function stripPhpTags( string $content ): string
-    {
-        // Entferne öffnende PHP-Tags (<?php, <?=, <?)
-        $content = preg_replace( '/^<\?(?:php)?\s*/i', '', $content );
-
-        // Entferne schließende PHP-Tags am Ende
-        return preg_replace( '/\s*\?>\s*$/', '', $content );
+        // Abschließend: Mehrfache Leerzeilen im gesamten Dokument reduzieren
+        return preg_replace( '/\n{3,}/', "\n\n", $fileContents );
     }
 }

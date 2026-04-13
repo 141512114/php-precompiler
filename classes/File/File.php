@@ -38,6 +38,11 @@ class File
         return $this->fileAnalyzer()->findIncludes( $this->getPath() );
     }
 
+    public function writeIncludesIntoFile(): false|string
+    {
+        return $this->fileAnalyzer()->replaceIncludesWithContent( $this );
+    }
+
     ####################################
     # Setter
     ####################################
